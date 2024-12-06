@@ -31,7 +31,7 @@ case "$DISTRO" in
 esac
 
 # Symlink dotfiles
-stow zsh tmux neovim
+stow zsh tmux nvim
 
 # Set ZSH as default shell
 if [ "$SHELL" != "$(which zsh)" ]; then
