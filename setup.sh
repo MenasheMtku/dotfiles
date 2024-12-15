@@ -39,7 +39,6 @@ if [ "$SHELL" != "$(which zsh)" ]; then
 fi
 
 # Call the Oh My Zsh setup script
-"$DOTFILES_DIR/zsh/ohmyzsh_setup.sh"
+#"$DOTFILES_DIR/zsh/ohmyzsh_setup.sh"
 
 echo "Setup complete!"
-

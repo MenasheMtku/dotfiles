@@ -65,6 +65,14 @@ ZSH_THEME="agnoster"
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
+# Install Oh My Zsh
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  echo "Installing Oh My Zsh..."
+  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+  echo "Oh My Zsh is already installed."
+fi
+
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
@@ -102,6 +110,13 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+ alias ls="lsd"
+ alias l="ls -l"
+ alias la="ls -a"
+ alias lla="ls -la"
+ alias lt="ls --tree"
+
  prompt_context() {}
 
 export NVM_DIR="$HOME/.nvm"
@@ -114,3 +129,5 @@ prompt_dir() {
 }
 
 export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
+
+
