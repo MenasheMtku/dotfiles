@@ -34,7 +34,7 @@ cd ~/dotfiles
 
 The setup.sh script will detect your system's package manager (for Ubuntu, Debian, Fedora, or Arch) and install the necessary packages (zsh, tmux, neovim, stow, git). It will also symlink the dotfiles into their respective locations.
 
-Make the script executable and run it:
+2. Make the script executable and run it:
 
 ```bash
 chmod +x setup.sh
@@ -50,7 +50,7 @@ This script will:
 
 ## Install Fonts (Optional)
 
-If you'd like to install custom fonts, use the font_install.sh script. You need to provide a URL to a .zip file containing the fonts.
+2. If you'd like to install custom fonts, use the font_install.sh script. You need to provide a URL to a .zip file containing the fonts.
 
 ```bash
 ./font_install.sh <nerdfont-zip-url>
