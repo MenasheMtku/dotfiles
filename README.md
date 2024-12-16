@@ -63,6 +63,42 @@ This script will:
     Move the font files to the system font directory.
     Update the font cache.
 
+## install lsd
+
+ support) will be installed as part of the setup.sh script. Installation varies based on your system:
+
+For WSL (or Debian/Ubuntu-based systems):
+
+The setup.sh script will download and install the lsd package using dpkg:
+
+```bash
+wget https://github.com/Peltoche/lsd/releases/latest/download/lsd_amd64.deb
+sudo dpkg -i lsd_amd64.deb
+rm lsd_amd64.deb
+```
+
+For Other Linux Distributions:
+
+The setup.sh script will use the appropriate package manager:
+
+Ubuntu:
+```bash
+sudo snap insuall lsd
+```
+
+Arch Linux: Installs lsd using pacman:
+```bash
+sudo pacman -Syu lsd
+```
+
+Fedora: Installs lsd using dnf:
+```bash
+sudo dnf install lsd
+```
+
+If your distribution does not have lsd in its package repositories, the script will fallback to downloading the .deb package (as described for WSL). Alternatively, you can build lsd from source if needed.
+
+
 ## Configure Zsh
 
 The .zshrc file contains several useful configurations for Zsh:
