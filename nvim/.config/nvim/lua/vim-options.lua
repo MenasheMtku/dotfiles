@@ -1,11 +1,16 @@
--- Indentation settings
-vim.cmd("set expandtab")       -- Use spaces instead of tabs
-vim.cmd("set tabstop=2")       -- Number of spaces per tab
-vim.cmd("set softtabstop=2")   -- Insert/delete spaces as tabs
-vim.cmd("set shiftwidth=2")    -- Indentation width
+vim.cmd("set expandtab")
+vim.cmd("set tabstop=2")
+vim.cmd("set softtabstop=2")
+vim.cmd("set shiftwidth=2")
 vim.g.mapleader = " "
-vim.opt.termguicolors = true
-vim.cmd("syntax on")
-vim.cmd("filetype plugin indent on")
 
+vim.opt.swapfile = false
 
+-- Navigate vim panes better
+--vim.keymap.set('n', '<c-k>', ':wincmd k<CR>')
+--vim.keymap.set('n', '<c-j>', ':wincmd j<CR>')
+--vim.keymap.set('n', '<c-h>', ':wincmd h<CR>')
+--vim.keymap.set('n', '<c-l>', ':wincmd l<CR>')
+
+vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>')
+vim.wo.number = true

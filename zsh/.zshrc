@@ -99,6 +99,7 @@ source $ZSH/oh-my-zsh.sh
 # Compilation flags
 # export ARCHFLAGS="-arch $(uname -m)"
 
+##################################################################################################
 # Set personal aliases, overriding those provided by Oh My Zsh libs,
 # plugins, and themes. Aliases can be placed here, though Oh My Zsh
 # users are encouraged to define aliases within a top-level file in
@@ -111,13 +112,32 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
- alias ls="lsd"
- alias l="ls -l"
- alias la="ls -a"
- alias lla="ls -la"
- alias lt="ls --tree"
+#File and Directory Management
+alias ls="lsd"               # Replace default 'ls' with 'lsd'
+alias ll="lsd -l"            # Long listing format
+alias la="lsd -a"            # Show hidden files
+alias lt="lsd --tree"        # Display a directory structure as a tree
+alias lh="lsd -lh"           # Human-readable file sizes
+alias ld="lsd -d */"         # List directories only
+alias lsbig="lsd -lh --sort=size | tail -n 10" # Show the 10 largest files
 
- prompt_context() {}
+#Zsh and Shell Management
+alias zsc="nvim ~/.zshrc"    # Quickly edit .zshrc in Neovim
+alias zss="source ~/.zshrc"  # Reload Zsh configuration
+alias cls="clear"            # Shortcut to clear the terminal
+
+#dotfiles
+alias dtf="cd ~/dotfiles"
+
+#Neovim Shortcuts
+
+#Package Management
+alias suu="sudo apt update && sudo apt upgrade -y" # Update and upgrade packages (Debian/Ubuntu)
+
+################################################################################################
+
+# hides the computer name
+prompt_context() {}
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -125,9 +145,7 @@ export NVM_DIR="$HOME/.nvm"
 
 #Shortening my prompt in Zsh
 prompt_dir() {
-  prompt_segment blue $CURRENT_FG '%1~'
+  prompt_segment blue $CURRENT_FG '%2~'
 }
 
 export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
-
-
