@@ -8,7 +8,12 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time Oh My Zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+
 ZSH_THEME="agnoster"
+
+#ZSH_THEME="pmcgee"
+
+
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -66,12 +71,12 @@ ZSH_THEME="agnoster"
 # ZSH_CUSTOM=/path/to/new-custom-folder
 
 # Install Oh My Zsh
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-  echo "Installing Oh My Zsh..."
-  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-else
-  echo "Oh My Zsh is already installed."
-fi
+#if [ ! -d "$HOME/.oh-my-zsh" ]; then
+#  echo "Installing Oh My Zsh..."
+#  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+#else
+#  echo "Oh My Zsh is already installed."
+#fi
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -126,6 +131,9 @@ alias zsc="nvim ~/.zshrc"    # Quickly edit .zshrc in Neovim
 alias zss="source ~/.zshrc"  # Reload Zsh configuration
 alias cls="clear"            # Shortcut to clear the terminal
 
+#Lazygit shoortcut
+alias lzg="lazygit"
+
 #dotfiles
 alias dtf="cd ~/dotfiles"
 
@@ -136,16 +144,16 @@ alias suu="sudo apt update && sudo apt upgrade -y" # Update and upgrade packages
 
 ################################################################################################
 
-# hides the computer name
-prompt_context() {}
-
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+
+#hides the computer name
+ prompt_context() {}
 #Shortening my prompt in Zsh
-prompt_dir() {
-  prompt_segment blue $CURRENT_FG '%2~'
-}
+ prompt_dir() {
+  prompt_segment blue $CURRENT_FG '%1~'
+ }
 
 export PATH="$PATH:/mnt/c/Program\ Files/Docker/Docker/resources/bin"
