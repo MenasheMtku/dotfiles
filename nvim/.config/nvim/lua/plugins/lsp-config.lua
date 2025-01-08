@@ -10,6 +10,15 @@ return {
     lazy = false,
     opts = {
       auto_install = true,
+      ensure_installed = {
+        -- "ts_ls",
+        "eslint",
+        "tailwindcss",
+        "html",
+        "lua_ls",
+        "cssls",
+        "jsonls"
+      },
     },
   },
   {
@@ -17,8 +26,33 @@ return {
     lazy = false,
     config = function()
       local capabilities = require('cmp_nvim_lsp').default_capabilities()
-
       local lspconfig = require("lspconfig")
+
+      lspconfig.ts_ls.setup({
+        capabilities = capabilities,
+        filetypes = {
+          "typescript",
+          "typescriptreact",
+          "typescript.tsx",
+          "javascript",
+          "javascriptreact",
+          "javascript.jsx"
+        },
+        root_dir = lspconfig.util.root_pattern("package.json", "tsconfig.json", "jsconfig.json"),
+      })
+
+      -- ESLint configuration
+      lspconfig.eslint.setup({
+        capabilities = capabilities,
+        on_attach = function(client, bufnr)
+          vim.api.nvim_create_autocmd("BufWritePre", {
+            buffer = bufnr,
+            command = "EslintFixAll",
+          })
+        end,
+      })
+
+
       lspconfig.tailwindcss.setup({
         capabilities = capabilities
       })
