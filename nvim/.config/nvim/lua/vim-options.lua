@@ -14,4 +14,5 @@ vim.cmd('filetype plugin indent on')
 --vim.keymap.set('n', '<c-l>', ':wincmd l<CR>')
 
 vim.keymap.set('n', '<leader>h', ':nohlsearch<CR>')
+--vim.g.codeium_enabled = true
 vim.wo.number = true
