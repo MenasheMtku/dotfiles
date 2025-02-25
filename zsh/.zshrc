@@ -16,12 +16,7 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 
-#ZSH_THEME="agnoster"
 ZSH_THEME="robbyrussell"
-
-#ZSH_THEME="pmcgee"
-
-
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -33,7 +28,7 @@ ZSH_THEME="robbyrussell"
 # CASE_SENSITIVE="true"
 
 # Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
+# Case-sensitive completion must be off. _ and - will be interchangeable
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
@@ -77,14 +72,6 @@ ZSH_THEME="robbyrussell"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Install Oh My Zsh
-#if [ ! -d "$HOME/.oh-my-zsh" ]; then
-#  echo "Installing Oh My Zsh..."
-#  sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-#else
-#  echo "Oh My Zsh is already installed."
-#fi
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
