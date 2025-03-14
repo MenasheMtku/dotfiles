@@ -23,5 +23,8 @@ return {
     -- Keymaps
     vim.keymap.set("n", "<C-a>", ":Neotree filesystem reveal toggle left<CR>", {})
     vim.keymap.set("n", "<leader>bf", ":Neotree buffers reveal toggle float<CR>", {})
+    -- Toggle between Neo-tree and buffers
+    vim.keymap.set("n", "<leader>f", "<C-w>l", { desc = "Move focus to file/right" })
+    vim.keymap.set("n", "<leader>b", "<C-w>h", { desc = "Move focus to Neo-tree/left" })
   end,
 }
