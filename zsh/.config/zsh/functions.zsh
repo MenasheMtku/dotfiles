@@ -1,4 +1,5 @@
-# Distro-aware system updater — replaces the apt-hardcoded 'suu' alias
+# Distro-aware system updater — unalias first in case an old alias is live
+unalias suu 2>/dev/null || true
 suu() {
     if command -v apt &>/dev/null; then
         sudo apt update && sudo apt upgrade -y
