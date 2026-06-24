@@ -1,160 +1,208 @@
 # Dotfiles
 
-Personal development environment dotfiles for Linux. Covers `zsh`, `tmux`, `neovim`, `kitty`, and `git`. Uses [GNU Stow](https://www.gnu.org/software/stow/) for symlinking and supports Ubuntu/Debian, Fedora, and Arch Linux.
+My personal Linux development environment — `zsh`, `tmux`, `neovim`, `kitty`, and `git` — all configured and ready to go on a fresh machine in one command.
 
-## Structure
+**Supported distros:** Ubuntu · Debian · Fedora · Arch Linux
 
-```
-dotfiles/
-├── setup.sh                        # Idempotent bootstrap — run this first
-├── font_install.sh                 # Install a Nerd Font from a zip URL
-├── git/
-│   ├── .gitconfig                  # Core git settings, delta pager, aliases
-│   └── .gitconfig.local.example   # Template for name/email (not tracked)
-├── kitty/
-│   └── .config/kitty/kitty.conf   # Kitty terminal — Catppuccin Mocha
-├── nvim/
-│   └── .config/nvim/
-│       ├── init.lua                # Lazy.nvim bootstrap
-│       ├── lua/vim-options.lua     # Editor settings
-│       └── lua/plugins/           # One file per plugin
-├── tmux/
-│   └── .tmux.conf                  # Catppuccin Mocha, TPM plugins, vi keys
-└── zsh/
-    ├── .zshrc                      # Thin entry point — sources modules below
-    └── .config/zsh/
-        ├── aliases.zsh             # All aliases
-        ├── exports.zsh             # ENV vars and PATH
-        └── functions.zsh          # Shell functions (suu, prompt helpers)
-```
+---
 
-## Installation
+## Quick Start
 
-### 1. Clone
+> **Prerequisites:** `git` and `curl` must already be installed.
 
 ```bash
 git clone git@github.com:MenasheMtku/dotfiles.git ~/dotfiles
-cd ~/dotfiles
+cd ~/dotfiles && ./setup.sh
 ```
 
-### 2. Run the setup script
+That's it. The script handles everything else. See [What `setup.sh` does](#what-setupsh-does) for the full list.
 
-```bash
-chmod +x setup.sh
-./setup.sh
+After the script finishes, do these two things:
+
+1. **Set your git identity** — fill in your name and email:
+   ```bash
+   nvim ~/.gitconfig.local
+   ```
+
+2. **Install tmux plugins** — open tmux and press `Ctrl+Space` then `I` (capital i).
+
+Then open a new terminal and you're done.
+
+---
+
+## What `setup.sh` Does
+
+The script is **idempotent** — running it multiple times is safe, it skips anything already installed.
+
+| Step | What happens |
+|---|---|
+| Core packages | Installs `zsh`, `tmux`, `neovim`, `stow`, `git` via your distro's package manager |
+| Modern CLI tools | Installs `lsd`, `lazygit`, `bat`, `ripgrep`, `fd`, `fzf`, `zoxide`, `delta` |
+| Oh My Zsh | Installs OMZ + `zsh-autosuggestions` + `zsh-syntax-highlighting` |
+| Tmux plugins | Clones TPM (Tmux Plugin Manager) |
+| Symlinks | Links all configs into `$HOME` using `stow --restow` |
+| Default shell | Sets `zsh` as your login shell |
+| Git identity | Creates `~/.gitconfig.local` from the template on first run |
+
+---
+
+## Repo Structure
+
 ```
-
-The script is **idempotent** — safe to run multiple times. It will:
-
-- Install core packages: `zsh`, `tmux`, `neovim`, `stow`, `git`
-- Install modern CLI tools: `lsd`, `lazygit`, `bat`, `ripgrep`, `fd`, `fzf`, `zoxide`, `delta`
-- Install [Oh My Zsh](https://ohmyzsh.sh) + `zsh-autosuggestions` + `zsh-syntax-highlighting`
-- Install [TPM](https://github.com/tmux-plugins/tpm) (Tmux Plugin Manager)
-- Symlink all configs into `$HOME` via `stow --restow`
-- Set `zsh` as your default shell
-- Create `~/.gitconfig.local` from the template (first run only)
-
-Supported distros: Ubuntu/Debian · Fedora · Arch Linux
-
-### 3. Set your git identity
-
-```bash
-nvim ~/.gitconfig.local   # fill in name and email — this file is NOT tracked
+dotfiles/
+├── setup.sh                        # Run this on a fresh machine
+├── font_install.sh                 # Optional: install a Nerd Font from a URL
+│
+├── git/
+│   ├── .gitconfig                  # Git settings, delta pager, aliases
+│   └── .gitconfig.local.example   # Template for your name/email (copy, don't edit)
+│
+├── kitty/
+│   └── .config/kitty/kitty.conf   # Terminal emulator config (Catppuccin Mocha)
+│
+├── nvim/
+│   └── .config/nvim/
+│       ├── init.lua                # Entry point — bootstraps Lazy.nvim
+│       ├── lua/vim-options.lua     # Editor settings (tabs, leader key, etc.)
+│       └── lua/plugins/           # One file per plugin
+│
+├── tmux/
+│   └── .tmux.conf                  # Tmux config (Catppuccin Mocha, vi keybinds)
+│
+└── zsh/
+    ├── .zshrc                      # Entry point — sources the three files below
+    └── .config/zsh/
+        ├── aliases.zsh             # All shell aliases
+        ├── exports.zsh             # Environment variables and PATH
+        └── functions.zsh          # Shell functions
 ```
-
-### 4. Install tmux plugins
-
-Start a tmux session and press `Prefix + I` (capital i) to install plugins via TPM.
-
-### 5. Install fonts (optional)
-
-```bash
-./font_install.sh <url-to-nerd-font.zip>
-```
-
-The script downloads the zip, moves `.ttf`/`.otf` files to `/usr/local/share/fonts/`, and refreshes the font cache. The config uses **JetBrains Mono** — grab it from [nerdfonts.com](https://www.nerdfonts.com/).
 
 ---
 
 ## Zsh
 
-`.zshrc` is a thin entry point that sources three modules:
+The shell config is split into focused files so it's easy to find and edit things:
 
-| File | Contents |
-|---|---|
-| `exports.zsh` | `$ZSH`, `$EDITOR`, NVM, PATH additions |
-| `aliases.zsh` | `lsd` file aliases, tool shortcuts, modern CLI replacements |
-| `functions.zsh` | `suu` (distro-aware updater), prompt helpers |
+- **`aliases.zsh`** — all aliases in one place
+- **`exports.zsh`** — environment variables, PATH, NVM
+- **`functions.zsh`** — shell functions like `suu`
 
-**Key aliases:**
+### Aliases
 
-```zsh
-ls / ll / la / lt   # lsd variants
-cat                 # bat (syntax-highlighted)
-grep                # ripgrep (rg)
-find                # fd
-lzg                 # lazygit
-dtf                 # cd ~/dotfiles
-zsc / zss           # edit / reload .zshrc
-suu                 # distro-aware system update (apt / pacman / dnf)
-```
+| Alias | Expands to | Notes |
+|---|---|---|
+| `ls`, `ll`, `la`, `lt`, `lh` | `lsd` variants | Color-coded directory listings |
+| `cat` | `bat --paging=never` | Syntax-highlighted output |
+| `grep` | `rg` | ripgrep — much faster |
+| `find` | `fd` | Simpler, faster find |
+| `lzg` | `lazygit` | Terminal git UI |
+| `dtf` | `cd ~/dotfiles` | Jump to this repo |
+| `zsc` | `nvim ~/.zshrc` | Edit shell config |
+| `zss` | `source ~/.zshrc` | Reload shell config |
+| `suu` | distro-aware upgrade | Works on apt, pacman, and dnf |
 
-Modern CLI aliases (`bat`, `rg`, `fd`) degrade gracefully — they fall back to the standard tool if not installed.
+> Modern tool aliases (`bat`, `rg`, `fd`) fall back gracefully to the standard system tools if not installed.
 
 ---
 
 ## Tmux
 
-Prefix: `Ctrl+Space`
+**Prefix key:** `Ctrl+Space`
 
-| Key | Action |
+| Keys | Action |
 |---|---|
-| `h/j/k/l` | Navigate panes (vim-style) |
-| `Alt+Arrow` | Navigate panes (no prefix) |
-| `Shift+Arrow` | Switch windows |
-| `"` / `%` | Split (preserves cwd) |
-| `Prefix+I` | Install TPM plugins |
+| `h` / `j` / `k` / `l` | Move between panes (vim-style, requires prefix) |
+| `Alt + Arrow` | Move between panes (no prefix needed) |
+| `Shift + Arrow` | Switch windows |
+| `"` | Split horizontally (opens in current directory) |
+| `%` | Split vertically (opens in current directory) |
+| `Prefix + I` | Install / update tmux plugins |
+| `Prefix + d` | Detach from session |
 
-Plugins: `catppuccin-tmux`, `tmux-resurrect`, `tmux-yank`, `vim-tmux-navigator`
+**Plugins:** `catppuccin-tmux` · `tmux-resurrect` · `tmux-yank` · `vim-tmux-navigator`
 
 ---
 
 ## Neovim
 
-Lua config using [Lazy.nvim](https://github.com/folke/lazy.nvim). Plugins auto-install on first launch.
+Lua-based config using [Lazy.nvim](https://github.com/folke/lazy.nvim). All plugins install automatically on first launch — just open `nvim` and wait a moment.
 
-**LSP servers** (via Mason): TypeScript, ESLint, TailwindCSS, HTML, CSS, JSON, Lua
+**Leader key:** `Space`
 
-**Key bindings:**
+### Keybindings
 
 | Key | Action |
 |---|---|
-| `K` | Hover docs |
-| `<leader>gd` | Go to definition |
-| `<leader>gr` | Go to references |
-| `<leader>ca` | Code actions |
-| `<leader>rn` | Rename symbol |
-| `<C-p>` | Telescope file finder |
-| `<leader>fg` | Telescope live grep |
-| `<C-a>` | Toggle Neo-tree |
-| `<C-\>` | Toggle floating terminal |
+| `K` | Show hover documentation |
+| `Space gd` | Go to definition |
+| `Space gr` | Show all references |
+| `Space ca` | Code actions |
+| `Space rn` | Rename symbol |
+| `Space gf` | Format file |
+| `Ctrl+p` | Find files (Telescope) |
+| `Space fg` | Search inside files (live grep) |
+| `Ctrl+a` | Toggle file tree (Neo-tree) |
+| `Ctrl+\` | Toggle floating terminal |
 
-Format on save is enabled (Prettier via conform.nvim). AI completion via [Codeium](https://codeium.com/).
+**LSP servers** (auto-installed via Mason): TypeScript · ESLint · TailwindCSS · HTML · CSS · JSON · Lua
+
+**Format on save** is enabled using Prettier (via conform.nvim).
+
+**AI completion** via [Codeium](https://codeium.com/) — free, no API key needed, just sign in on first use.
 
 ---
 
 ## Git
 
-`~/.gitconfig` (from `git/.gitconfig`) sets up:
-- `delta` as the diff pager with side-by-side view and Catppuccin theme
-- Useful aliases: `lg`, `st`, `co`, `br`, `last`
-- `push.autoSetupRemote = true`
+The tracked `~/.gitconfig` includes:
+
+- **[delta](https://github.com/dandavison/delta)** as the diff pager — side-by-side diffs with line numbers and Catppuccin syntax highlighting
+- **Shortcuts:** `git lg` (pretty log graph), `git st` (short status), `git co`, `git br`, `git last`
+- `push.autoSetupRemote = true` — no more typing `--set-upstream` on new branches
 - `init.defaultBranch = main`
 
-Personal identity (`user.name`, `user.email`) goes in `~/.gitconfig.local`, which is included but not tracked.
+**Your name and email are NOT in the tracked config.** They live in `~/.gitconfig.local`, which is included automatically but never committed. Copy the template to get started:
+
+```bash
+cp ~/dotfiles/git/.gitconfig.local.example ~/.gitconfig.local
+nvim ~/.gitconfig.local
+```
+
+---
+
+## Fonts (Optional)
+
+All configs are set to use **JetBrains Mono Nerd Font**. If it's not installed, download it from [nerdfonts.com](https://www.nerdfonts.com/font-downloads) and run:
+
+```bash
+./font_install.sh <url-to-JetBrainsMono.zip>
+```
 
 ---
 
 ## Theme
 
-Everything uses **Catppuccin Mocha** — Neovim, Tmux, and Kitty are all consistent.
+Everything uses **[Catppuccin Mocha](https://github.com/catppuccin/catppuccin)** — Neovim, Tmux, and Kitty all share the same palette so colors are consistent across tools.
+
+---
+
+## Troubleshooting
+
+**`stow` fails with "existing target" error**
+A real file (not a symlink) already exists at the target path, e.g. `~/.zshrc`. Back it up and re-run:
+```bash
+mv ~/.zshrc ~/.zshrc.bak
+./setup.sh
+```
+
+**`ls` shows command not found**
+`lsd` wasn't installed. Run `./setup.sh` again — it will pick up where it left off.
+
+**Tmux looks unstyled**
+TPM plugins haven't been installed yet. Open tmux and press `Ctrl+Space` then `I`.
+
+**Neovim shows errors on first open**
+Normal — Lazy.nvim is installing plugins. Wait for it to finish, then restart nvim.
+
+**`suu` does nothing on my distro**
+Only `apt`, `pacman`, and `dnf` are supported. Add your package manager to `functions.zsh`.
