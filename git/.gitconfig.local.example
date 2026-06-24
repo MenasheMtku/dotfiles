@@ -1,0 +1,13 @@
+# Copy this file to ~/.gitconfig.local (NOT tracked in git)
+# and fill in your identity.
+#
+# ~/.gitconfig (from dotfiles) includes this file via [include].
+
+[user]
+    name  = Your Name
+    email = you@example.com
+    # signingkey = YOUR_GPG_KEY_ID
+
+[commit]
+    # Uncomment to sign commits with GPG:
+    # gpgsign = true

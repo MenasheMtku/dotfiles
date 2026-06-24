@@ -1,0 +1,40 @@
+[include]
+    path = ~/.gitconfig.local
+
+[core]
+    editor = nvim
+    autocrlf = input
+    pager = delta
+
+[delta]
+    navigate = true
+    line-numbers = true
+    side-by-side = true
+    syntax-theme = Catppuccin Mocha
+
+[interactive]
+    diffFilter = delta --color-only
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+[alias]
+    lg  = log --oneline --graph --decorate --all
+    st  = status -s
+    co  = checkout
+    br  = branch
+    unstage = reset HEAD --
+    last    = log -1 HEAD
+    aliases = config --get-regexp alias
+
+[pull]
+    rebase = false
+
+[push]
+    autoSetupRemote = true
+
+[init]
+    defaultBranch = main
