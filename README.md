@@ -170,6 +170,27 @@ nvim ~/.gitconfig.local
 
 ---
 
+## Lazygit
+
+A terminal UI for git — browse commits, stage hunks, resolve conflicts, and manage branches without leaving the terminal.
+
+**Launch:** `lzg` (or `lazygit`)
+
+| Key | Action |
+|---|---|
+| `1` / `2` / `3` / `4` / `5` | Switch panels (Status, Files, Branches, Commits, Stash) |
+| `Space` | Stage / unstage file or hunk |
+| `c` | Commit |
+| `p` | Push |
+| `P` | Pull |
+| `b` | Branches menu |
+| `z` | Undo last action |
+| `q` | Quit |
+
+> Press `?` at any time to see all keybindings for the current panel.
+
+---
+
 ## Fonts (Optional)
 
 All configs are set to use **JetBrains Mono Nerd Font**. If it's not installed, download it from [nerdfonts.com](https://www.nerdfonts.com/font-downloads) and run:
