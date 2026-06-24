@@ -1,0 +1,26 @@
+# Binaries & installers
+*.deb
+*.rpm
+*.tar.gz
+*.AppImage
+*.exe
+*.dmg
+
+# Editor artifacts
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Secrets — belt-and-suspenders
+.env
+.env.local
+*.secret
+*.pem
+*.key
+
+# Git identity (use git/.gitconfig.local, tracked as .gitconfig.local.example)
+git/.gitconfig.local
+
+# Node
+node_modules/
