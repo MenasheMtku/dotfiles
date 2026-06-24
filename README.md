@@ -1,169 +1,160 @@
 # Dotfiles
 
-This repository contains my personal dotfiles for setting up a development environment. It includes configurations for `zsh`, `tmux`, and `neovim`. These dotfiles are designed to help you quickly set up your environment across different systems, with a focus on efficiency, customization, and a streamlined development workflow.
+Personal development environment dotfiles for Linux. Covers `zsh`, `tmux`, `neovim`, `kitty`, and `git`. Uses [GNU Stow](https://www.gnu.org/software/stow/) for symlinking and supports Ubuntu/Debian, Fedora, and Arch Linux.
 
-## File Structure
+## Structure
 
-```plaintext
+```
 dotfiles/
-├── font_install.sh             # A script to install fonts from a URL
-├── nvim/                       # Neovim configuration folder
-│   ├── init.lua                # Main Neovim configuration
-│   ├── lazy-lock.json          # Neovim lazy plugin lock file
-│   └── lua/
-│       └── plugins/            # Neovim plugin configuration files
-├── setup.sh                    # Setup script for installing required packages and linking dotfiles
-├── tmux/                       # tmux configuration folder
-├── zsh/                        # Zsh configuration folder
-└── .zshrc                      # Zsh configuration file
+├── setup.sh                        # Idempotent bootstrap — run this first
+├── font_install.sh                 # Install a Nerd Font from a zip URL
+├── git/
+│   ├── .gitconfig                  # Core git settings, delta pager, aliases
+│   └── .gitconfig.local.example   # Template for name/email (not tracked)
+├── kitty/
+│   └── .config/kitty/kitty.conf   # Kitty terminal — Catppuccin Mocha
+├── nvim/
+│   └── .config/nvim/
+│       ├── init.lua                # Lazy.nvim bootstrap
+│       ├── lua/vim-options.lua     # Editor settings
+│       └── lua/plugins/           # One file per plugin
+├── tmux/
+│   └── .tmux.conf                  # Catppuccin Mocha, TPM plugins, vi keys
+└── zsh/
+    ├── .zshrc                      # Thin entry point — sources modules below
+    └── .config/zsh/
+        ├── aliases.zsh             # All aliases
+        ├── exports.zsh             # ENV vars and PATH
+        └── functions.zsh          # Shell functions (suu, prompt helpers)
 ```
 
-## Installation Steps
+## Installation
 
-Follow these steps to set up your environment using these dotfiles:
-1. Clone the Repository
-
-First, clone this repository into your home directory:
+### 1. Clone
 
 ```bash
-git clone https://github.com/your-username/dotfiles.git ~/dotfiles
+git clone git@github.com:MenasheMtku/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ```
 
-## Run the Setup Script
-
-The setup.sh script will detect your system's package manager (for Ubuntu, Debian, Fedora, or Arch) and install the necessary packages (zsh, tmux, neovim, stow, git). It will also symlink the dotfiles into their respective locations.
-
-2. Make the script executable and run it:
+### 2. Run the setup script
 
 ```bash
 chmod +x setup.sh
 ./setup.sh
-
 ```
 
-This script will:
+The script is **idempotent** — safe to run multiple times. It will:
 
-    Install essential packages based on your distribution (Ubuntu/Debian, Fedora, Arch).
-    Symlink the dotfiles for zsh, tmux, and neovim using Stow.
-    Set Zsh as your default shell.
+- Install core packages: `zsh`, `tmux`, `neovim`, `stow`, `git`
+- Install modern CLI tools: `lsd`, `lazygit`, `bat`, `ripgrep`, `fd`, `fzf`, `zoxide`, `delta`
+- Install [Oh My Zsh](https://ohmyzsh.sh) + `zsh-autosuggestions` + `zsh-syntax-highlighting`
+- Install [TPM](https://github.com/tmux-plugins/tpm) (Tmux Plugin Manager)
+- Symlink all configs into `$HOME` via `stow --restow`
+- Set `zsh` as your default shell
+- Create `~/.gitconfig.local` from the template (first run only)
 
-## Install Fonts (Optional)
+Supported distros: Ubuntu/Debian · Fedora · Arch Linux
 
-2. If you'd like to install custom fonts, use the font_install.sh script. You need to provide a URL to a .zip file containing the fonts.
+### 3. Set your git identity
 
 ```bash
-./font_install.sh <nerdfont-zip-url>
+nvim ~/.gitconfig.local   # fill in name and email — this file is NOT tracked
 ```
 
-This script will:
+### 4. Install tmux plugins
 
-    Download the font file from the provided URL.
-    Unzip the font file.
-    Move the font files to the system font directory.
-    Update the font cache.
+Start a tmux session and press `Prefix + I` (capital i) to install plugins via TPM.
 
-## install lsd
-
- support) will be installed as part of the setup.sh script. Installation varies based on your system:
-
-For WSL (or Debian/Ubuntu-based systems):
-
-The setup.sh script will download and install the lsd package using dpkg:
+### 5. Install fonts (optional)
 
 ```bash
-wget https://github.com/Peltoche/lsd/releases/latest/download/lsd_amd64.deb
-sudo dpkg -i lsd_amd64.deb
-rm lsd_amd64.deb
+./font_install.sh <url-to-nerd-font.zip>
 ```
 
-For Other Linux Distributions:
+The script downloads the zip, moves `.ttf`/`.otf` files to `/usr/local/share/fonts/`, and refreshes the font cache. The config uses **JetBrains Mono** — grab it from [nerdfonts.com](https://www.nerdfonts.com/).
 
-The setup.sh script will use the appropriate package manager:
+---
 
-Ubuntu:
-```bash
-sudo snap insuall lsd
+## Zsh
+
+`.zshrc` is a thin entry point that sources three modules:
+
+| File | Contents |
+|---|---|
+| `exports.zsh` | `$ZSH`, `$EDITOR`, NVM, PATH additions |
+| `aliases.zsh` | `lsd` file aliases, tool shortcuts, modern CLI replacements |
+| `functions.zsh` | `suu` (distro-aware updater), prompt helpers |
+
+**Key aliases:**
+
+```zsh
+ls / ll / la / lt   # lsd variants
+cat                 # bat (syntax-highlighted)
+grep                # ripgrep (rg)
+find                # fd
+lzg                 # lazygit
+dtf                 # cd ~/dotfiles
+zsc / zss           # edit / reload .zshrc
+suu                 # distro-aware system update (apt / pacman / dnf)
 ```
 
-Arch Linux: Installs lsd using pacman:
-```bash
-sudo pacman -Syu lsd
-```
+Modern CLI aliases (`bat`, `rg`, `fd`) degrade gracefully — they fall back to the standard tool if not installed.
 
-Fedora: Installs lsd using dnf:
-```bash
-sudo dnf install lsd
-```
+---
 
-If your distribution does not have lsd in its package repositories, the script will fallback to downloading the .deb package (as described for WSL). Alternatively, you can build lsd from source if needed.
+## Tmux
 
+Prefix: `Ctrl+Space`
 
-## Configure Zsh
+| Key | Action |
+|---|---|
+| `h/j/k/l` | Navigate panes (vim-style) |
+| `Alt+Arrow` | Navigate panes (no prefix) |
+| `Shift+Arrow` | Switch windows |
+| `"` / `%` | Split (preserves cwd) |
+| `Prefix+I` | Install TPM plugins |
 
-The .zshrc file contains several useful configurations for Zsh:
+Plugins: `catppuccin-tmux`, `tmux-resurrect`, `tmux-yank`, `vim-tmux-navigator`
 
-    The Agnoster theme for a nice prompt.
-    Plugins like zsh-autosuggestions, zsh-syntax-highlighting, and git.
-    Several helpful aliases like ls="lsd" for a better ls experience.
+---
 
-If Oh My Zsh isn't installed, the .zshrc will install it automatically.
+## Neovim
 
-## tmux Configuration
+Lua config using [Lazy.nvim](https://github.com/folke/lazy.nvim). Plugins auto-install on first launch.
 
-The .tmux.conf file contains several custom settings for tmux, such as:
+**LSP servers** (via Mason): TypeScript, ESLint, TailwindCSS, HTML, CSS, JSON, Lua
 
-    Window and pane numbering starting at 1.
-    Keybindings to switch between panes and windows.
-    Integration with several tmux plugins using TPM.
+**Key bindings:**
 
-Key tmux plugins included are:
+| Key | Action |
+|---|---|
+| `K` | Hover docs |
+| `<leader>gd` | Go to definition |
+| `<leader>gr` | Go to references |
+| `<leader>ca` | Code actions |
+| `<leader>rn` | Rename symbol |
+| `<C-p>` | Telescope file finder |
+| `<leader>fg` | Telescope live grep |
+| `<C-a>` | Toggle Neo-tree |
+| `<C-\>` | Toggle floating terminal |
 
-    tmux-resurrect: Saves and restores tmux sessions.
-    tmux-yank: Allows copying text from tmux panes.
-    vim-tmux-navigator: Seamless navigation between Vim and tmux panes.
-    catppuccin-tmux: A theme for tmux that matches the Catppuccin theme.
+Format on save is enabled (Prettier via conform.nvim). AI completion via [Codeium](https://codeium.com/).
 
-To install the tmux plugins, press prefix + I after starting a tmux session.
+---
 
-## Neovim Configuration
+## Git
 
-Neovim is configured using Lua. The main configuration file is nvim/init.lua, which loads other Lua modules for plugins, settings, and LSP (Language Server Protocol) configurations.
+`~/.gitconfig` (from `git/.gitconfig`) sets up:
+- `delta` as the diff pager with side-by-side view and Catppuccin theme
+- Useful aliases: `lg`, `st`, `co`, `br`, `last`
+- `push.autoSetupRemote = true`
+- `init.defaultBranch = main`
 
-The lua/plugins/ folder contains individual Lua files for configuring specific Neovim plugins:
+Personal identity (`user.name`, `user.email`) goes in `~/.gitconfig.local`, which is included but not tracked.
 
-    alpha.lua: Configures the startup screen.
-    catppuccin.lua: Configures the Catppuccin color scheme.
-    completions.lua: Configures autocompletion.
-    lsp-config.lua: Configures LSP.
-    neo-tree.lua: Configures the file explorer.
-    telescope.lua: Configures the fuzzy finder.
-    treesitter.lua: Configures syntax highlighting using Treesitter.
+---
 
-##  Customization
+## Theme
 
-You can customize various settings in the following files:
-
-    Zsh: Modify the theme and plugin list in .zshrc.
-    Tmux: Adjust keybindings, colors, and plugins in .tmux.conf.
-    Neovim: Edit the init.lua and the Lua plugin configurations to install new plugins and tweak settings.
-
-##  Post-Installation
-
-After setting up, you may want to:
-
-    Customize the Zsh prompt and aliases.
-    Add additional Neovim plugins to enhance your development workflow.
-    Adjust tmux keybindings to suit your style.
-
-
-## Requirements
-
-    Zsh: The default shell is set to Zsh. Ensure that it is installed.
-    Tmux: A terminal multiplexer for managing multiple terminal sessions.
-    Neovim: The primary editor used in this setup.
-    Font Installation: Fonts can be installed using the font_install.sh script (optional).
-
-### License
-
-Feel free to use, modify, and distribute these dotfiles for personal or professional use.    
+Everything uses **Catppuccin Mocha** — Neovim, Tmux, and Kitty are all consistent.
